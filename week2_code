@@ -1,0 +1,16 @@
+#!/bin/bash
+hostfile=$1
+portfile=$2
+printf "%-15s %s\n" "Host" "Port"
+
+# This provides proper formatting including columns.
+
+for host in $(cat $hostfile); do
+  for port in $(cat $portfile); do
+  
+    # Echo only if a TCP connection is successful
+    
+    timeout .1 bash -c "echo >/dev/tcp/$host/$port"  2>/dev/null &&
+      printf "%-15s %s\n" "$host" "$port"
+  done
+done
